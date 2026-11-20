@@ -38,6 +38,44 @@
   contact.textContent = C.contact.label;
   if (DEMO) $("#demo-banner").hidden = false;
 
+  // ---------- music ----------
+  const audio = $("#bg-music");
+  const musicBtn = $("#music-btn");
+  const MUSIC_VOL = 0.55;
+  let fadeTimer;
+  function fadeTo(target, ms, done) {
+    clearInterval(fadeTimer);
+    const start = audio.volume, steps = Math.max(1, Math.round(ms / 50));
+    let i = 0;
+    fadeTimer = setInterval(() => {
+      i++;
+      audio.volume = Math.min(1, Math.max(0, start + (target - start) * (i / steps)));
+      if (i >= steps) { clearInterval(fadeTimer); done && done(); }
+    }, 50);
+  }
+  function setMusicUi(playing) {
+    musicBtn.classList.toggle("playing", playing);
+    musicBtn.setAttribute("aria-label", playing ? "Выключить музыку" : "Включить музыку");
+  }
+  function startMusic() {
+    if (!C.music) return;
+    audio.volume = 0;
+    audio.play().then(() => { setMusicUi(true); fadeTo(MUSIC_VOL, 2500); }).catch(() => setMusicUi(false));
+    musicBtn.hidden = false;
+  }
+  if (C.music) {
+    audio.src = C.music;
+    musicBtn.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.volume = 0;
+        audio.play().then(() => { setMusicUi(true); fadeTo(MUSIC_VOL, 800); }).catch(() => {});
+      } else {
+        setMusicUi(false);
+        fadeTo(0, 400, () => audio.pause());
+      }
+    });
+  }
+
   // ---------- envelope ----------
   const envScreen = $("#env-screen");
   const env = $("#env");
@@ -46,6 +84,7 @@
   async function openEnvelope() {
     if (opened) return;
     opened = true;
+    startMusic(); // must run inside the click so the browser allows sound
     const fast = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0.3 : 1;
     env.classList.add("seal-off");
     $("#env-hint").classList.add("hide");

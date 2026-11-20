@@ -36,6 +36,10 @@ window.CONFIG = {
     url: "https://t.me/bakuli28",
   },
 
+  // Фоновая музыка: положи mp3 в папку сайта и впиши имя файла, например "music.mp3".
+  // Включается, когда гость открывает конверт. Пусто — музыки нет.
+  music: "music.mp3",
+
   // URL веб-приложения Google Apps Script (см. README).
   // Пока пусто — сайт работает в демо-режиме: ответы сохраняются только в твоём браузере.
   scriptUrl: "https://script.google.com/macros/s/AKfycbw5B2aXv0g3giqeJaR-57quVR5fhDdoRFuKyZRZZnO22G3U_UrJpio46UKKRXBhrxdG/exec",
