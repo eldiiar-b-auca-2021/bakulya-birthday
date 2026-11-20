@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>День рождения</title>
+  <meta name="description" content="Приглашение на день рождения" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <noscript><style>.env-screen{display:none}body.locked{overflow:auto}</style></noscript>
+</head>
+<body class="locked">
+  <div class="env-screen" id="env-screen">
+    <div class="env-stage">
+      <div class="env" id="env">
+        <div class="env-back"></div>
+        <div class="env-card" aria-hidden="true">
+          <p class="ec-script" data-bind="invitedLine"></p>
+          <p class="ec-title" data-bind="title"></p>
+          <p class="ec-age" data-bind="age"></p>
+          <p class="ec-quote" data-bind="quoteQ"></p>
+          <div class="ec-divider"><span>❦</span></div>
+          <p class="ec-meta" data-bind="dateLine"></p>
+          <p class="ec-meta" data-bind="placeLine"></p>
+        </div>
+        <div class="env-front-wrap"><div class="env-front"></div></div>
+        <div class="env-flap-wrap"><div class="env-flap"></div></div>
+        <button class="env-seal" id="env-seal" type="button" aria-label="Открыть приглашение">
+          <span data-bind="initial"></span>
+        </button>
+      </div>
+    </div>
+    <p class="env-hint" id="env-hint">Нажмите на печать, чтобы открыть</p>
+  </div>
+
+  <div class="petals" aria-hidden="true"></div>
+
+  <header class="hero">
+    <p class="eyebrow" data-bind="invitedLine"></p>
+    <h1 class="hero-title" data-bind="title"></h1>
+    <p class="hero-age" data-bind="age"></p>
+    <p class="hero-quote" data-bind="quoteQ"></p>
+    <p class="hero-date">📅 <span data-bind="dateLine"></span></p>
+    <p class="hero-place">📍 <span data-bind="placeLine"></span></p>
+
+    <div class="countdown" id="countdown" aria-live="polite">
+      <div><span id="cd-days">0</span><small>дней</small></div>
+      <div><span id="cd-hours">0</span><small>часов</small></div>
+      <div><span id="cd-mins">0</span><small>минут</small></div>
+      <div><span id="cd-secs">0</span><small>секунд</small></div>
+    </div>
+
+    <nav class="hero-nav">
+      <a class="btn btn-primary" href="#rsvp">Я приду</a>
+      <a class="btn btn-ghost" href="#wishlist">Вишлист</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section" id="details">
+      <h2 class="section-title">Детали</h2>
+      <div class="details-grid">
+        <article class="detail-card">
+          <div class="detail-icon">📅</div>
+          <h3>Когда</h3>
+          <p data-bind="dateLong"></p>
+          <p class="muted" data-bind="time"></p>
+        </article>
+        <article class="detail-card">
+          <div class="detail-icon">📍</div>
+          <h3>Где</h3>
+          <p data-bind="placeTitle"></p>
+          <p class="muted" data-bind="placeAddress"></p>
+          <a class="link" id="map-link" target="_blank" rel="noopener">Открыть карту →</a>
+        </article>
+        <article class="detail-card" id="dress-card">
+          <div class="detail-icon">👗</div>
+          <h3>Дресс-код</h3>
+          <p data-bind="dressCode"></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="wishlist">
+      <h2 class="section-title">Вишлист</h2>
+      <p class="section-sub">Если захотите порадовать подарком — вот что меня очень обрадует. Нажмите «Забронировать», чтобы другие гости видели, что подарок уже выбран. Кто что забронировал, никто не увидит.</p>
+      <div class="wishlist" id="wishlist-grid"></div>
+    </section>
+
+    <section class="section" id="rsvp">
+      <h2 class="section-title">Ты придёшь?</h2>
+      <p class="section-sub">Пожалуйста, ответь до <span data-bind="rsvpDeadline"></span>, чтобы я всё успела подготовить.</p>
+
+      <form class="rsvp-form" id="rsvp-form" novalidate>
+        <label class="field">
+          <span>Имя и фамилия</span>
+          <input type="text" name="name" required autocomplete="name" placeholder="Как тебя зовут?" />
+        </label>
+
+        <fieldset class="field choice">
+          <legend>Придёшь?</legend>
+          <label class="chip"><input type="radio" name="attending" value="yes" checked /><span>Да, обязательно 🎉</span></label>
+          <label class="chip"><input type="radio" name="attending" value="no" /><span>К сожалению, нет</span></label>
+        </fieldset>
+
+        <label class="field" id="guests-field">
+          <span>Сколько вас будет?</span>
+          <select name="guests">
+            <option value="1">Только я</option>
+            <option value="2">Я +1</option>
+            <option value="3">Нас трое</option>
+            <option value="4">Нас четверо</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Пожелания или комментарий</span>
+          <textarea name="comment" rows="3" placeholder="Аллергии, пожелания по музыке, тёплые слова…"></textarea>
+        </label>
+
+        <button class="btn btn-primary btn-block" type="submit">Отправить ответ</button>
+        <p class="form-status" id="form-status" role="status"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Жду тебя! 🌷</p>
+    <p class="muted">Есть вопросы? <a class="link" id="contact-link" target="_blank" rel="noopener"></a></p>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+  <div class="demo-banner" id="demo-banner" hidden>Демо-режим: ответы сохраняются только в этом браузере. Добавь scriptUrl в config.js.</div>
+
+  <dialog class="modal" id="reserve-modal">
+    <form method="dialog" class="modal-body" id="reserve-form">
+      <h3>Забронировать подарок</h3>
+      <p class="muted" id="reserve-gift-name"></p>
+      <label class="field">
+        <span>Твоё имя (увидит только организатор)</span>
+        <input type="text" name="who" required placeholder="Имя" />
+      </label>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" value="cancel" type="button" id="reserve-cancel">Отмена</button>
+        <button class="btn btn-primary" value="ok" type="submit">Забронировать</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
